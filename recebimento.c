@@ -7,30 +7,60 @@ Alunos-Matrícula:
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
 
-
-int** receber(char arquivo[]);
+int** receber(char arquivo[], int *tamanho);
+void montar_vet_treino(int *vet);
+void preencher_vet_norm(int indice, int tipo, float *vet);
+void preencher_ilbp(float *vet, int tam, int **matriz);
+void criar_bin(int tam,int **matriz, int *vet, int row, int cl);
+int bin_dec(int *vet);
 
 int main () {
-        
+    
 
 
-   // printf("%d %d\n",row,column);
-    //printf("%d",imagem[row-2][1024]);
-   // printf("%d ",imagem[1024][1024]);
-          
-   //char nome[] = "grass_01.txt";
-   int **imagem;
-   imagem = receber("grass_01.txt");
-   printf("%d ",imagem[1024][1024]);
- 
- 
+    //Processo de treinamento
+    int *img, *ima,i;
+    float *vm_img, *vm_ima;
+    
+    img = (int*)calloc(25,sizeof(int));
+    
+    if (img == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+    
+    ima = (int*)calloc(25,sizeof(int));
+    if (ima == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+
+    //Gerando 25 indices aleatorios de imagens de cada grupo
+    srand(time(NULL));
+    montar_vet_treino(ima);
+    montar_vet_treino(img);
+    
+    
+    //Criando e preenchendo os vetores normalizados do treinamento
+    vm_img = (float*)calloc(536,sizeof(int));
+    
+    if (vm_img == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+    
+    vm_ima = (float*)calloc(536,sizeof(int));
+    if (vm_ima == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+    
+//    for(i=0;i<25;i++){
+//         
+//          
+//        
+//        
+//        }
+    
+    preencher_vet_norm(1,0,vm_ima);
+
     
     
    return 0;
 }
 
-int** receber (char arquivo[]){
+int** receber (char arquivo[], int* tamanho){
     
     int** imagem;
     
@@ -41,7 +71,7 @@ int** receber (char arquivo[]){
         exit(1);
     }
     
-    int n,i;
+    int n;
     char c;
     
     
@@ -61,12 +91,9 @@ int** receber (char arquivo[]){
     
     
     
-    
-   // int * ar;
-    //ar = (int*)malloc(1*sizeof(int));
+
     int row =0;
     int column =0;
-    int count = 0;
     int aux =0;
     
     while(!feof(fp)){
@@ -95,9 +122,7 @@ int** receber (char arquivo[]){
             aux=0;
             continue;
         }
-        //count++;
-        //imagem[row] = (int*)realloc(imagem[row],(column+1)*sizeof(int));
-        //imagem[row][column]=n;
+
         
         column++;
         if((imagem[row] = (int*)realloc(imagem[row],(column+1)*sizeof(int)))==NULL){
@@ -110,5 +135,109 @@ int** receber (char arquivo[]){
         
     }
     
+    
+    *tamanho = row-2;
     return imagem;
+}
+int bin_dec(int *vet){
+    
+    int i,dec=0,aux=8;
+    for(i=0;i<9;i++){
+        
+         dec += vet[i] * pow(2,aux);
+         aux--;
+        
+    } 
+    
+   return dec;
+}
+
+void montar_vet_treino(int *vet){
+    
+    
+    int check,r,i,q=0;
+    
+    while(q<25){
+        
+        
+        check = 0;
+        r = (rand() % 50)+1;
+        
+        for(i=0;i<25;i++){
+             
+              if(vet[i]==r){check=1;}
+            
+        }
+        
+        if(check != 1){
+             
+              vet[q] = r;
+              q++; 
+            
+        }
+        
+    }
+    
+}
+
+void preencher_ilbp(int tam,int **matriz, int *vet, int row, int cl){
+    
+ int elem[] = {matriz[row-1][cl-1],matriz[row-1][cl],matriz[row-1][cl+1],matriz[row][cl-1],matriz[row][cl],matriz[row][cl+1],matriz[row+1][cl-1],matriz[row+1][cl],matriz[row+1][cl+1]};
+ float m = 0,i; 
+ int bin[9],min,temp;
+ for(i=0;i<9;i++){
+      m += elem[i]/9.0;
+     } 
+  
+  for(i=0;i<9;i++){
+      if(elem[i]>m){bin[i]=1;}
+      else{bin[i]=0;}
+   }
+   
+   min = bin_dec(bin);
+   for(i=0;i<9;i++){
+      temp = bin[i];
+      bin[i] = bin[8];
+      bin[8] = temp;
+      if(min>bin_dec(bin)){min = bin_dec(bin);}
+   }
+   
+}
+
+void (float *vet, int tam, int **matriz){
+     
+      //Processo ILBP
+      
+      printf("%d\n",matriz[1024][1024]);
+    
+    
+    }
+
+
+void preencher_vet_norm(int indice, int tipo, float *vet){
+      
+    char nome[15];
+    int tamanho;
+     //0 = grama 1= asfalto
+     if(tipo ==0){
+            sprintf(nome, "%s%.2d%s", "grass_",indice,".txt");
+         }   
+     else{
+            sprintf(nome, "%s%.2d%s", "asphalt_",indice,".txt");
+         }  
+     
+   int **imagem;
+   imagem = receber(nome,&tamanho);
+   
+   //Processo ILBP
+   
+   //Precisa ser float ?
+   float *vet_n; 
+   vet_n = (float*)calloc(536,sizeof(float));
+   if(vet_n == NULL){printf("Erro na alocacao");exit(1);}
+   preencher_ilbp(vet_n,tamanho,imagem);
+   //Processo GLCM
+   
+    
+
 }
