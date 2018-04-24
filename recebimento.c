@@ -16,6 +16,8 @@ void preencher_vet_norm(int indice, int tipo, float *vet);
 void preencher_ilbp(float *vet, int tam, int **matriz);
 void criar_bin(int tam,int **matriz, int *vet, int row, int cl);
 int bin_dec(int *vet);
+void preencher_glcm(float *vet, int tam, int **matriz);
+void calc_metr(int tam, int **matriz, float *vet, int dir);
 
 int main () {
     
@@ -180,7 +182,7 @@ void montar_vet_treino(int *vet){
     
 }
 
-void preencher_ilbp(int tam,int **matriz, int *vet, int row, int cl){
+void criar_bin(int tam,int **matriz, int *vet, int row, int cl){
     
  int elem[] = {matriz[row-1][cl-1],matriz[row-1][cl],matriz[row-1][cl+1],matriz[row][cl-1],matriz[row][cl],matriz[row][cl+1],matriz[row+1][cl-1],matriz[row+1][cl],matriz[row+1][cl+1]};
  float m = 0,i; 
@@ -202,18 +204,54 @@ void preencher_ilbp(int tam,int **matriz, int *vet, int row, int cl){
       if(min>bin_dec(bin)){min = bin_dec(bin);}
    }
    
+   vet[min] += 1;
 }
 
-void (float *vet, int tam, int **matriz){
+void preencher_ilbp(float *vet, int tam, int **matriz){
      
       //Processo ILBP
+      int i,j;
+      for(i=1;i<1024;i++){
+           for(j=1;j<1024;j++){
+               
+                 criar_bin(tam,matriz,vet,i,j);
+               
+               }
+    }
       
-      printf("%d\n",matriz[1024][1024]);
+    
+    
+}
+void calc_metr(int tam, int **matriz, float *vet, int dir){
+    
+  int **moc,i;
+  moc = (int**)calloc(1025,sizeof(int*));  
+  for(i)
+    
+  if(dir==0){
+      
+      
+      
+      }
+  else if(dir==1){}
+  else if(dir==2){}
+  else if(dir==3){}
+  else if(dir==4){}
+  else if(dir==5){}
+  else if(dir==6){}
+  else if(dir==7){}
+  else{}
+    
+    
+    
+}
+void preencher_glcm(float *vet, int tam, int **matriz){
+    
+    
+    
     
     
     }
-
-
 void preencher_vet_norm(int indice, int tipo, float *vet){
       
     char nome[15];
@@ -235,7 +273,7 @@ void preencher_vet_norm(int indice, int tipo, float *vet){
    float *vet_n; 
    vet_n = (float*)calloc(536,sizeof(float));
    if(vet_n == NULL){printf("Erro na alocacao");exit(1);}
-   preencher_ilbp(vet_n,tamanho,imagem);
+   preencher_ilbp(vet_n,tamanho,matriz);
    //Processo GLCM
    
     
