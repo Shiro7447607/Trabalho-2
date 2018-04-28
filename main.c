@@ -443,16 +443,16 @@ void preencher_vet_norm(int indice, int tipo, float *vet){
    //Processo ILBP
    
    //Precisa ser float ?
-   printf("Imagem x recebida\n");
+   printf("Imagem atual recebida\n");
    
    float *vet_n; 
    vet_n = (float*)calloc(536,sizeof(float));
    if(vet_n == NULL){printf("Erro na alocacao");exit(1);}
    preencher_ilbp(vet_n,tamanho,imagem);
-   printf("Fim ilbp\n");
+   printf("Fim do processo ilbp\n");
    //Processo GLCM
    preencher_glcm(vet_n,tamanho,imagem);
-   printf("Fim glcm\n");
+   printf("Fim do processo glcm\n");
    
    int min = vet_n[0],i,max=vet_n[0];
    for(i=1;i<536;i++){
@@ -464,13 +464,13 @@ void preencher_vet_norm(int indice, int tipo, float *vet){
          vet_n[i] = (vet_n[i] - min)/(float)(max-min);
         
         }
-        printf("Fim normalizacao\n");
+        printf("Fim da normalizacao\n");
    for(i=0;i<536;i++){
        
          vet[i] += (vet_n[i]/25.0);
        
     }
-    printf("Fim media\n");
+    printf("Fim do calculo da media na imagem atual\n--------------------\n");
    
    for(i=0;i<tamanho;i++){
        
@@ -508,7 +508,7 @@ void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,fl
    //Processo GLCM
    preencher_glcm(vet_n,tamanho,imagem);
    
-   printf("ilbp e glcm preenchidos\n");
+   printf("Processos ILBP e GLCM finalizados\n");
    
    int min = vet_n[0],i,max=vet_n[0];
    for(i=1;i<536;i++){
@@ -521,7 +521,7 @@ void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,fl
         
         }
         
-    printf("normalizacao concluida\n");
+    printf("Normalizacao do vetor atual concluida\n");
     float deg = 0;
     float dea = 0;      
   
@@ -534,13 +534,13 @@ void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,fl
      
      deg = sqrt(deg);
      dea = sqrt(dea);
-     printf("Dist euc concluida\n");
+     printf("Calculo das distancias euclidianas concluido\n");
      
    if(deg<dea && tipo==0){*ac += 1;}  
    else if(deg>dea && tipo==1){*ac += 1;}  
    else if(deg<dea && tipo==1){*fa += 1;}  
    else if(deg>dea && tipo==0){*fr += 1;}  
-   printf("Comparacao atual concluida\n");
+   printf("Comparacao atual concluida\n--------------------\n");
    
    for(i=0;i<tamanho;i++){
        
