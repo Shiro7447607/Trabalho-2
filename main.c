@@ -314,8 +314,8 @@ void preencher_ilbp(float *vet, int tam, int **matriz){
      
       //Processo ILBP
       int i,j;
-      for(i=1;i<1024;i++){
-           for(j=1;j<1024;j++){
+      for(i=1;i<tam-1;i++){
+           for(j=1;j<tam-1;j++){
                
                  criar_bin(tam,matriz,vet,i,j);
                
@@ -339,8 +339,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
     
        case 0:
          
-          for(i=0;i<1025;i++){
-             for(j=1;j<1025;j++){
+          for(i=0;i<tam;i++){
+             for(j=1;j<tam;j++){
               
                     mgl[matriz[i][j-1]][matriz[i][j]]++;
                             
@@ -348,8 +348,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 1:
-          for(i=1;i<1025;i++){
-             for(j=0;j<1025;j++){
+          for(i=1;i<tam;i++){
+             for(j=0;j<tam;j++){
               
                     mgl[matriz[i-1][j]][matriz[i][j]]++;
                             
@@ -357,8 +357,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 2:
-          for(i=0;i<1025;i++){
-             for(j=0;j<1024;j++){
+          for(i=0;i<tam;i++){
+             for(j=0;j<tam-1;j++){
               
                     mgl[matriz[i][j+1]][matriz[i][j]]++;
                             
@@ -366,8 +366,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 3:
-          for(i=0;i<1024;i++){
-             for(j=0;j<1025;j++){
+          for(i=0;i<tam-1;i++){
+             for(j=0;j<tam;j++){
               
                     mgl[matriz[i+1][j]][matriz[i][j]]++;
                             
@@ -375,8 +375,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 4:
-          for(i=1;i<1025;i++){
-             for(j=0;j<1024;j++){
+          for(i=1;i<tam;i++){
+             for(j=0;j<tam-1;j++){
               
                     mgl[matriz[i-1][j+1]][matriz[i][j]]++;
                             
@@ -384,8 +384,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 5:
-          for(i=0;i<1024;i++){
-             for(j=0;j<1024;j++){
+          for(i=0;i<tam-1;i++){
+             for(j=0;j<tam-1;j++){
               
                     mgl[matriz[i+1][j+1]][matriz[i][j]]++;
                             
@@ -393,8 +393,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 6:
-          for(i=0;i<1024;i++){
-             for(j=1;j<1025;j++){
+          for(i=0;i<tam-1;i++){
+             for(j=1;j<tam;j++){
               
                     mgl[matriz[i+1][j-1]][matriz[i][j]]++;
                             
@@ -402,8 +402,8 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 7:
-          for(i=1;i<1025;i++){
-             for(j=1;j<1025;j++){
+          for(i=1;i<tam;i++){
+             for(j=1;j<tam;j++){
               
                     mgl[matriz[i-1][j-1]][matriz[i][j]]++;
                             
