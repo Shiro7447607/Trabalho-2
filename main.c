@@ -12,13 +12,15 @@ Alunos-Matrícula:
 
 int** receber(char arquivo[], int *tamanho);
 void montar_vet_treino(int *vet);
-void preencher_vet_norm(int indice, int tipo, float *vet);
-void executar_testes(int indice, int tipo,float *vimg, float *vima,float *ac,float *fa, float* fr);
-void preencher_ilbp(float *vet, int tam, int **matriz);
-void criar_bin(int tam,int **matriz, float *vet, int row, int cl);
 int bin_dec(int *vet);
-void preencher_glcm(float *vet, int tam, int **matriz);
+void criar_bin(int tam,int **matriz, float *vet, int row, int cl);
+void preencher_ilbp(float *vet, int tam, int **matriz);
 void calc_metr(int tam, int **matriz, float *vet, int pi,int dir);
+void preencher_glcm(float *vet, int tam, int **matriz);
+void normalizar_vet(int tam, float *vet);
+void preencher_vet_med(int indice, int tipo, float *vet);
+void executar_testes(int indice, int tipo,float *vimg, float *vima,float *ac,float *fa, float* fr);
+
 
 int main () {
     
@@ -54,14 +56,14 @@ int main () {
     
     for(i=0;i<25;i++){
         
-        preencher_vet_norm(img[i],0,vm_img);
+        preencher_vet_med(img[i],0,vm_img);
         
         }
         
     printf("Vetor de medias normalizadas do tipo grama preenchido\n");
     for(i=0;i<25;i++){
         
-        preencher_vet_norm(ima[i],1,vm_ima);
+        preencher_vet_med(ima[i],1,vm_ima);
         
         }
     printf("Vetor de medias normalizadas do tipo asfalto preenchido\n");
@@ -130,6 +132,24 @@ int main () {
         
   printf("Taxa de acerto: %.2f %% \nTaxa de falsa aceitacao: %.2f %% \nTaxa de falsa rejeicao: %.2f %% \n",ac,fa,fr);      
         
+  printf("\nGrupo grama utilizado:\n");
+  
+  for(i = 0;i<25;i++)
+      printf("%d ",img[i]);
+ printf("\nGrupo asfalto utilizado:\n");
+
+  for(i = 0;i<25;i++)
+      printf("%d ",ima[i]);
+  printf("\nGrupo grama utilizado:\n");
+
+  for(i = 0;i<25;i++)
+    printf("%d ",it_img[i]);
+  printf("\nGrupo asfalto utilizado:\n");
+
+  for(i = 0;i<25;i++)
+    printf("%d ",it_ima[i]);
+
+  
   
   free(img);
   free(ima);
@@ -140,8 +160,7 @@ int main () {
 }
 
 int** receber (char arquivo[], int* tamanho){
-    
-    int** imagem;
+   int** imagem;
     
     
     FILE *fp;
@@ -215,8 +234,9 @@ int** receber (char arquivo[], int* tamanho){
     }
     
     
-    *tamanho = row-2;
+    *tamanho = row-1;
     return imagem;
+ 
 }
 int bin_dec(int *vet){
     
@@ -425,16 +445,31 @@ void preencher_glcm(float *vet, int tam, int **matriz){
   }
     
 }
-void preencher_vet_norm(int indice, int tipo, float *vet){
+
+void normalizar_vet(int tam, float* vet){
+    
+   int min = vet[0],i,max=vet[0];
+   for(i=1;i<tam;i++){
+          if(vet[i]>max){max=vet[i];}
+          if(vet[i]<min){min=vet[i];}
+       }
+    for(i=0;i<tam;i++){
+        
+         vet[i] = (vet[i] - min)/(float)(max-min);
+        
+        }
+    
+}
+void preencher_vet_med(int indice, int tipo, float *vet){
       
     char nome[15];
     int tamanho;
      //0 = grama 1= asfalto
      if(tipo ==0){
-            sprintf(nome, "%s%.2d%s", "grass_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "DataSet\\grass\\grass_",indice,".txt");
          }   
      else{
-            sprintf(nome, "%s%.2d%s", "asphalt_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "DataSet\\asphalt\\asphalt_",indice,".txt");
          }  
      
    int **imagem;
@@ -445,7 +480,8 @@ void preencher_vet_norm(int indice, int tipo, float *vet){
    //Precisa ser float ?
    printf("Imagem atual recebida\n");
    
-   float *vet_n; 
+   float *vet_n;
+   int i; 
    vet_n = (float*)calloc(536,sizeof(float));
    if(vet_n == NULL){printf("Erro na alocacao");exit(1);}
    preencher_ilbp(vet_n,tamanho,imagem);
@@ -453,18 +489,9 @@ void preencher_vet_norm(int indice, int tipo, float *vet){
    //Processo GLCM
    preencher_glcm(vet_n,tamanho,imagem);
    printf("Fim do processo glcm\n");
-   
-   int min = vet_n[0],i,max=vet_n[0];
-   for(i=1;i<536;i++){
-          if(vet_n[i]>max){max=vet_n[i];}
-          if(vet_n[i]<min){min=vet_n[i];}
-       }
-    for(i=0;i<536;i++){
-        
-         vet_n[i] = (vet_n[i] - min)/(float)(max-min);
-        
-        }
-        printf("Fim da normalizacao\n");
+     
+   normalizar_vet(536,vet_n);
+   printf("Fim da normalizacao\n");
    for(i=0;i<536;i++){
        
          vet[i] += (vet_n[i]/25.0);
@@ -487,10 +514,10 @@ void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,fl
     int tamanho;
      //0 = grama 1= asfalto
      if(tipo ==0){
-            sprintf(nome, "%s%.2d%s", "grass_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "DataSet\\grass\\grass_",indice,".txt");
          }   
      else{
-            sprintf(nome, "%s%.2d%s", "asphalt_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "DataSet\\asphalt\\asphalt_",indice,".txt");
          }  
      
    int **imagem;
@@ -510,21 +537,12 @@ void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,fl
    
    printf("Processos ILBP e GLCM finalizados\n");
    
-   int min = vet_n[0],i,max=vet_n[0];
-   for(i=1;i<536;i++){
-          if(vet_n[i]>max){max=vet_n[i];}
-          if(vet_n[i]<min){min=vet_n[i];}
-       }
-    for(i=0;i<536;i++){
-        
-         vet_n[i] = (vet_n[i] - min)/(float)(max-min);
-        
-        }
+    normalizar_vet(536,vet_n);
         
     printf("Normalizacao do vetor atual concluida\n");
     float deg = 0;
     float dea = 0;      
-  
+    int i;
     for(i=0;i<536;i++){
         
         deg += pow((vet_n[i]-vimg[i]),2);
