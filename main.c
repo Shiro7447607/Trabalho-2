@@ -284,7 +284,7 @@ void criar_bin(int tam,int **matriz, float *vet, int row, int cl){
  int elem[] = {matriz[row-1][cl-1],matriz[row-1][cl],matriz[row-1][cl+1],matriz[row][cl-1],matriz[row][cl],matriz[row][cl+1],matriz[row+1][cl-1],matriz[row+1][cl],matriz[row+1][cl+1]};
  float m = 0;
  int i; 
- int bin[9],min,temp;
+ int bin[9],min,temp,temp2,z;
  for(i=0;i<9;i++){
       m += elem[i]/9.0;
      } 
@@ -296,9 +296,14 @@ void criar_bin(int tam,int **matriz, float *vet, int row, int cl){
    
    min = bin_dec(bin);
    for(i=0;i<9;i++){
-      temp = bin[i];
-      bin[i] = bin[8];
-      bin[8] = temp;
+      temp = bin[0];
+      bin[0] = bin[8];
+      for(z=1;z<9;z++){
+          temp2 = bin[z];
+          bin[z] = temp;
+          temp = temp2;
+      }
+      
       if(min>bin_dec(bin)){min = bin_dec(bin);}
    }
    
@@ -437,10 +442,10 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
 }
 void preencher_glcm(float *vet, int tam, int **matriz){
     
-  int i,pi=512,dir=0;
+  int i,pi=512;
   for(i=0;i<8;i++){
      
-     calc_metr(tam,matriz,vet,pi,dir+i);
+     calc_metr(tam,matriz,vet,pi,i);
      pi += 3;
   }
     
