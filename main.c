@@ -139,7 +139,9 @@ int main () {
   fa = (fa/50.0)*100;
   fr = (fr/50.0)*100;
         
-  printf("Taxa de acerto: %.2f %% \nTaxa de falsa aceitacao: %.2f %% \nTaxa de falsa rejeicao: %.2f %% \n",ac,fa,fr);      
+  printf("Taxa de acerto: %.2f %% \nTaxa de falsa aceitacao: %.2f %% \nTaxa de falsa rejeicao: %.2f %% \n",ac,fa,fr);  
+
+  printf("----Grupos de treinamento:----\n");    
         
   printf("\nGrupo grama utilizado:\n");
   
@@ -149,6 +151,8 @@ int main () {
 
   for(i = 0;i<25;i++)
       printf("%d ",ima[i]);
+      
+   printf("\n----Grupos de teste:----\n");
   printf("\nGrupo grama utilizado:\n");
 
   for(i = 0;i<25;i++)
