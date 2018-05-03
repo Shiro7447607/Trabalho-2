@@ -32,10 +32,12 @@ int main () {
     
     img = (int*)calloc(25,sizeof(int));
     
-    if (img == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+    if (img == NULL){printf("Alocacao do vetor de indices de treinamento para grama falhou. Finalizado.\n");exit(1);}
     
     ima = (int*)calloc(25,sizeof(int));
-    if (ima == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+    if (ima == NULL){
+        free(img);
+        printf("Alocacao do vetor de indices de treinamento para asfalto falhou.\n");exit(1);}
 
     //Gerando 25 indices aleatorios de imagens de cada grupo
     srand(time(NULL));
@@ -47,10 +49,17 @@ int main () {
     //Criando e preenchendo os vetores normalizados do treinamento
     vm_img = (float*)calloc(536,sizeof(int));
     
-    if (vm_img == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+    if (vm_img == NULL){
+        free(img);
+        free(ima);
+        printf("Alocacao do vetor de medias do tipo grama falhou. Finalizado.\n");exit(1);}
     
     vm_ima = (float*)calloc(536,sizeof(int));
-    if (vm_ima == NULL){printf("Alocacao falhou. Finalizado.\n");exit(1);}
+    if (vm_ima == NULL){
+        free(img);
+        free(ima);
+        free(vm_img);
+        printf("Alocacao do vetor de medias para asfalto falhou. Finalizado.\n");exit(1);}
     
     printf("Vetores de media alocados\n");
     
@@ -183,6 +192,7 @@ int** receber (char arquivo[], int* tamanho){
     
     if((imagem[0] = (int*)malloc(1*sizeof(int)))==NULL){
          
+           free(imagem);
            printf("Erro na alocacao"); 
            exit(1);
         }
@@ -193,6 +203,7 @@ int** receber (char arquivo[], int* tamanho){
     int row =0;
     int column =0;
     int aux =0;
+    int fi;
     
     while(!feof(fp)){
     
@@ -206,13 +217,20 @@ int** receber (char arquivo[], int* tamanho){
             
             row++;
             if((imagem = (int**)realloc(imagem,(row+1)*sizeof(int*)))==NULL){
-                
+                  
+                  for(fi=0;fi<row;fi++)
+                       free(imagem[fi]);
+                  free(imagem);
                   printf("Erro na alocacao"); 
                   exit(1);
                 
                 }
             if((imagem[row] = (int*)malloc(1*sizeof(int)))==NULL){
-                
+                    
+                    for(fi=0;fi<row;fi++)
+                        free(imagem[fi]);
+                    free(imagem);
+
                     printf("Erro na alocacao");
                     exit(1);
                 }
@@ -226,6 +244,9 @@ int** receber (char arquivo[], int* tamanho){
         if((imagem[row] = (int*)realloc(imagem[row],(column+1)*sizeof(int)))==NULL){
             
                 printf("Erro na alocacao");
+                  for(fi=0;fi<row;fi++)
+                       free(imagem[fi]);
+                  free(imagem);
                 exit(1);
               
             }
@@ -327,12 +348,25 @@ void preencher_ilbp(float *vet, int tam, int **matriz){
 }
 void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
     
-  int **mgl,i,j;
+  int **mgl,i,j,fi;
   mgl = (int**)calloc(256,sizeof(int*));
+  if(mgl==NULL){
+        printf("Alocacao da matriz glcm falhou");
+        
+      }
   for(i=0;i<256;i++){
       
         *(mgl+i) = calloc(256,sizeof(int));
+        if(mgl[i]==NULL){
+            for(fi=0;fi<256;fi++){
+                
+                  free(mgl[i]);
+                }
+           free(mgl);  
+           printf("Alocacao da matriz glcm falhou");
+           
       }
+}
   
   
   switch(dir){
@@ -489,13 +523,24 @@ void preencher_vet_med(int indice, int tipo, float *vet){
    
    //Processo ILBP
    
-   //Precisa ser float ?
    printf("Imagem atual recebida\n");
    
    float *vet_n;
    int i; 
    vet_n = (float*)calloc(536,sizeof(float));
-   if(vet_n == NULL){printf("Erro na alocacao");exit(1);}
+   if(vet_n == NULL){
+       
+       for(i=0;i<tamanho;i++){
+       
+        free(imagem[i]);
+       
+       }
+       
+       free(imagem);
+       
+       printf("Erro na alocacao");exit(1);}
+       
+       
    preencher_ilbp(vet_n,tamanho,imagem);
    printf("Fim do processo ilbp\n");
    //Processo GLCM
@@ -523,7 +568,7 @@ void preencher_vet_med(int indice, int tipo, float *vet){
 void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,float *fa, float* fr){
       
     char nome[15];
-    int tamanho;
+    int tamanho,fi;
      //0 = grama 1= asfalto
      if(tipo ==0){
             sprintf(nome, "%s%.2d%s", "DataSet\\grass\\grass_",indice,".txt");
@@ -537,12 +582,22 @@ void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,fl
    
    //Processo ILBP
    
-   //Precisa ser float ?
+   
    printf("Imagem atual recebida\n");
    
    float *vet_n; 
    vet_n = (float*)calloc(536,sizeof(float));
-   if(vet_n == NULL){printf("Erro na alocacao");exit(1);}
+   if(vet_n == NULL){
+       
+        for(fi=0;fi<tamanho;fi++){
+       
+        free(imagem[fi]);
+       
+       }
+       
+       free(imagem);
+       
+       printf("Erro na alocacao");exit(1);}
    preencher_ilbp(vet_n,tamanho,imagem);
    //Processo GLCM
    preencher_glcm(vet_n,tamanho,imagem);
