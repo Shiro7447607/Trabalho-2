@@ -1,4 +1,4 @@
-/*
+﻿/*
 Alunos-Matrícula:
  Marcos Nery Borges Junior - 17/0017885
  Matheus Salles Blanco - 16/0138400
@@ -338,7 +338,7 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
   switch(dir){
     
        case 0:
-         
+          //A direita de
           for(i=0;i<tam;i++){
              for(j=1;j<tam;j++){
               
@@ -348,6 +348,7 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 1:
+        //Abaixo de
           for(i=1;i<tam;i++){
              for(j=0;j<tam;j++){
               
@@ -357,6 +358,7 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 2:
+        //A esquerda de 
           for(i=0;i<tam;i++){
              for(j=0;j<tam-1;j++){
               
@@ -366,6 +368,7 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 3:
+        //Acima de
           for(i=0;i<tam-1;i++){
              for(j=0;j<tam;j++){
               
@@ -375,24 +378,7 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
           }
           break;
         case 4:
-          for(i=1;i<tam;i++){
-             for(j=0;j<tam-1;j++){
-              
-                    mgl[matriz[i-1][j+1]][matriz[i][j]]++;
-                            
-             }
-          }
-          break;
-        case 5:
-          for(i=0;i<tam-1;i++){
-             for(j=0;j<tam-1;j++){
-              
-                    mgl[matriz[i+1][j+1]][matriz[i][j]]++;
-                            
-             }
-          }
-          break;
-        case 6:
+        //A diagonal direita-cima de
           for(i=0;i<tam-1;i++){
              for(j=1;j<tam;j++){
               
@@ -401,11 +387,32 @@ void calc_metr(int tam, int **matriz, float *vet, int pi,int dir){
              }
           }
           break;
-        case 7:
+        case 5:
+        //A diagonal direita-baixo de
           for(i=1;i<tam;i++){
              for(j=1;j<tam;j++){
               
                     mgl[matriz[i-1][j-1]][matriz[i][j]]++;
+                            
+             }
+          }
+          break;
+        case 6:
+        //A diagonal esquerda-baixo de
+          for(i=1;i<tam;i++){
+             for(j=0;j<tam-1;j++){
+              
+                    mgl[matriz[i-1][j+1]][matriz[i][j]]++;
+                            
+             }
+          }
+          break;
+        case 7:
+        //A diagonal esquerda-cima
+          for(i=0;i<tam-1;i++){
+             for(j=0;j<tam-1;j++){
+              
+                    mgl[matriz[i+1][j+1]][matriz[i][j]]++;
                             
              }
           }
