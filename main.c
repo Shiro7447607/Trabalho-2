@@ -512,7 +512,7 @@ void normalizar_vet(int tam, float* vet){
 }
 void preencher_vet_med(int indice, int tipo, float *vet){
       
-    char nome[15];
+    char nome[27];
     int tamanho;
      //0 = grama 1= asfalto
      if(tipo ==0){
@@ -571,7 +571,7 @@ void preencher_vet_med(int indice, int tipo, float *vet){
 }
 void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,float *fa, float* fr){
       
-    char nome[15];
+    char nome[27];
     int tamanho,fi;
      //0 = grama 1= asfalto
      if(tipo ==0){
