@@ -516,10 +516,10 @@ void preencher_vet_med(int indice, int tipo, float *vet){
     int tamanho;
      //0 = grama 1= asfalto
      if(tipo ==0){
-            sprintf(nome, "%s%.2d%s", "DataSet\\grass\\grass_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "./DataSet/grass/grass_",indice,".txt");
          }   
      else{
-            sprintf(nome, "%s%.2d%s", "DataSet\\asphalt\\asphalt_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "./DataSet/asphalt/asphalt_",indice,".txt");
          }  
      
    int **imagem;
@@ -575,10 +575,10 @@ void executar_testes(int indice, int tipo, float *vimg, float *vima,float *ac,fl
     int tamanho,fi;
      //0 = grama 1= asfalto
      if(tipo ==0){
-            sprintf(nome, "%s%.2d%s", "DataSet\\grass\\grass_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "./DataSet/grass/grass_",indice,".txt");
          }   
      else{
-            sprintf(nome, "%s%.2d%s", "DataSet\\asphalt\\asphalt_",indice,".txt");
+            sprintf(nome, "%s%.2d%s", "./DataSet/asphalt/asphalt_",indice,".txt");
          }  
      
    int **imagem;
