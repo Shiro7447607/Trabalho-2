@@ -139,7 +139,7 @@ int main () {
   fa = (fa/50.0)*100;
   fr = (fr/50.0)*100;
         
-  printf("Taxa de acerto: %.2f %% \nTaxa de falsa aceitacao: %.2f %% \nTaxa de falsa rejeicao: %.2f %% \n",ac,fa,fr);  
+  printf("Resultados:\nTaxa de acerto: %.2f %% \nTaxa de falsa aceitacao: %.2f %% \nTaxa de falsa rejeicao: %.2f %% \n",ac,fa,fr);  
 
   printf("----Grupos de treinamento:----\n");    
         
